@@ -10,7 +10,7 @@ app.get("/", (req, res) => {
   res.render("index");
 });
 
-const registerSchema = [
+const loginValidator = [
   body("userName")
     .exists()
     .isLength({ min: 6 })
@@ -26,7 +26,7 @@ const registerSchema = [
     .withMessage("password should contain at least 6 characters"),
 ];
 
-app.post("/", registerSchema, validationRequestSchema, (req, res) => {
+app.post("/", loginValidator, loginValidation, (req, res) => {
   res.status(200).json({
     success: true,
     message: "Login successful",
@@ -34,7 +34,7 @@ app.post("/", registerSchema, validationRequestSchema, (req, res) => {
   console.log(req.body);
 });
 
-function validationRequestSchema(req, res, next) {
+function loginValidation(req, res, next) {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({
@@ -45,6 +45,6 @@ function validationRequestSchema(req, res, next) {
   next();
 }
 
-app.listen(5000,()=>{
-  console.log("server is running")
+app.listen(5000, () => {
+  console.log("server is running");
 });
